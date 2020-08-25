@@ -17,8 +17,6 @@ pipeline {
          stage('test') {
             steps {
                 sh 'mvn test'
-                
-                
             }
         }
          stage('build and push image') {
