@@ -5,12 +5,7 @@ pipeline {
     }
 
     stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
-                sleep 2
-            }
-        }
+        
         stage('build') {
             steps {
                 echo 'Hello build'
@@ -19,16 +14,23 @@ pipeline {
                 sh 'mvn package'
             }
         }
-         stage('deploy') {
-            steps {
-                echo 'Hello deploy'
-                sleep 2
-            }
-        }
          stage('test') {
             steps {
-                echo 'Hello test'
-                sleep 2
+                sh 'mvn test'
+                
+                
+            }
+        }
+         stage('build and push image') {
+            steps {
+                script {
+                    checkout scm
+                    docker.withRegistry('', 'dockerUserID') {
+                        def customImage = docker.build("manawa/hol-pipeline):${env.BUILD_ID}")
+                        customImage.push()
+                    }
+                }
+                
             }
         }
     }
