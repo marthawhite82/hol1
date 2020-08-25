@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     checkout scm
-                    docker.withRegistry('', 'dockerUserID') {
+                    docker.withRegistry('', 'DockerregistryID') {
                         def customImage = docker.build("manawa/hol-pipeline):${env.BUILD_ID}")
                         customImage.push()
                     }
